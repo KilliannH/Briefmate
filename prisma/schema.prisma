@@ -1,0 +1,128 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Users & Authentication
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  briefs        Brief[]
+  clients       Client[]
+  sessions      Session[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Clients
+model Client {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  phone       String?
+  company     String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  briefs      Brief[]
+}
+
+// Briefs
+model Brief {
+  id            String      @id @default(cuid())
+  title         String
+  description   String?
+  status        BriefStatus @default(DRAFT)
+  priority      Priority    @default(MEDIUM)
+  
+  // Dates
+  deadline      DateTime?
+  startDate     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Budget
+  budget        Float?
+  estimatedHours Float?
+  
+  // Relations
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  clientId      String?
+  client        Client?     @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  
+  tasks         Task[]
+  attachments   Attachment[]
+  
+  @@index([userId, status])
+  @@index([deadline])
+}
+
+// Tasks within a brief
+model Task {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  completed   Boolean     @default(false)
+  order       Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  briefId     String
+  brief       Brief       @relation(fields: [briefId], references: [id], onDelete: Cascade)
+  
+  @@index([briefId])
+}
+
+// File attachments
+model Attachment {
+  id          String   @id @default(cuid())
+  filename    String
+  url         String
+  filesize    Int?
+  mimetype    String?
+  createdAt   DateTime @default(now())
+  
+  briefId     String
+  brief       Brief    @relation(fields: [briefId], references: [id], onDelete: Cascade)
+  
+  @@index([briefId])
+}
+
+// Enums
+enum BriefStatus {
+  DRAFT
+  IN_PROGRESS
+  IN_REVIEW
+  COMPLETED
+  CANCELLED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
