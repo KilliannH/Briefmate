@@ -84,7 +84,7 @@ export function BriefCard({ brief }: BriefCardProps) {
         </span>
       </div>
 
-      <div className="flex items-center justify-between text-sm text-gray-500">
+      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
         <div className="flex items-center gap-4">
           {brief.deadline && (
             <span className="flex items-center gap-1">

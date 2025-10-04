@@ -2,6 +2,7 @@ import { getBrief } from "@/app/actions/briefs"
 import { TaskItem } from "@/components/task-item"
 import { AddTaskForm } from "@/components/add-task-form"
 import { DeleteBriefButton } from "@/components/delete-brief-button"
+import { ExportSingleBrief } from "@/components/export-single-brief"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Edit, Calendar, DollarSign, Clock } from "lucide-react"
@@ -69,6 +70,20 @@ export default async function BriefDetailPage({ params }: { params: { id: string
             )}
           </div>
           <div className="flex gap-2">
+            <ExportSingleBrief 
+              brief={{
+                title: brief.title,
+                description: brief.description,
+                status: brief.status,
+                priority: brief.priority,
+                clientName: brief.client?.name || null,
+                deadline: brief.deadline,
+                budget: brief.budget,
+                estimatedHours: brief.estimatedHours,
+                createdAt: brief.createdAt,
+                tasks: brief.tasks,
+              }}
+            />
             <Link
               href={`/dashboard/briefs/${brief.id}/edit`}
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
