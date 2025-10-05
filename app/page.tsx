@@ -56,11 +56,15 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Screenshot/Image placeholder */}
-        <div className="mt-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-2xl p-8 aspect-video max-w-5xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg h-full flex items-center justify-center">
-            <FileText className="w-32 h-32 text-white/50" />
-          </div>
+        {/* Screenshot */}
+        <div className="mt-16 rounded-2xl shadow-2xl overflow-hidden max-w-5xl mx-auto">
+          <img
+            src="/dashboard_view.png"
+            alt="Aperçu du dashboard Briefmate"
+            width={1920}
+            height={1080}
+            className="w-full h-auto"
+          />
         </div>
       </section>
 
