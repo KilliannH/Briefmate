@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 // Users & Authentication
@@ -20,6 +20,7 @@ model User {
   briefs        Brief[]
   clients       Client[]
   sessions      Session[]
+  templates     BriefTemplate[]
 }
 
 model Session {
@@ -109,6 +110,26 @@ model Attachment {
   brief       Brief    @relation(fields: [briefId], references: [id], onDelete: Cascade)
   
   @@index([briefId])
+}
+
+// Templates de briefs
+model BriefTemplate {
+  id            String      @id @default(cuid())
+  name          String
+  description   String?
+  priority      Priority    @default(MEDIUM)
+  estimatedHours Float?
+  
+  // Tasks prédéfinies (JSON)
+  tasks         Json?
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
 }
 
 // Enums

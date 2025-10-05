@@ -6,7 +6,7 @@ import { BriefsFilters } from "@/components/briefs-filters"
 import { BriefsSort } from "@/components/briefs-sort"
 import { ExportBriefs } from "@/components/export-briefs"
 import Link from "next/link"
-import { FileText, Plus } from "lucide-react"
+import { FileText, Plus, LayoutTemplate } from "lucide-react"
 
 export default async function DashboardPage({
   searchParams,
@@ -83,6 +83,11 @@ export default async function DashboardPage({
     select: { id: true, name: true }
   })
 
+  // Vérifier s'il y a des templates
+  const hasTemplates = await prisma.briefTemplate.count({
+    where: { userId: session.user.id }
+  }) > 0
+
   const hasFilters = searchParams.search || searchParams.status || searchParams.priority || searchParams.client
   const totalBriefs = await prisma.brief.count({
     where: { userId: session.user.id }
@@ -103,6 +108,15 @@ export default async function DashboardPage({
         <div className="flex items-center gap-3">
           <ExportBriefs filters={searchParams} />
           <BriefsSort />
+          {hasTemplates && (
+            <Link
+              href="/dashboard/templates"
+              className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+            >
+              <LayoutTemplate className="w-4 h-4" />
+              Depuis template
+            </Link>
+          )}
           <Link
             href="/dashboard/briefs/new"
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"

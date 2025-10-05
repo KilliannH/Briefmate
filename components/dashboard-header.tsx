@@ -10,7 +10,7 @@ export async function DashboardHeader() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/dashboard" className="text-2xl font-bold text-gray-900">
+            <Link href="/" className="text-2xl font-bold text-gray-900">
               Briefmate
             </Link>
           </div>
@@ -27,6 +27,18 @@ export async function DashboardHeader() {
               className="text-gray-700 hover:text-gray-900"
             >
               Clients
+            </Link>
+            <Link 
+              href="/dashboard/templates" 
+              className="text-gray-700 hover:text-gray-900"
+            >
+              Templates
+            </Link>
+            <Link 
+              href="/dashboard/stats" 
+              className="text-gray-700 hover:text-gray-900"
+            >
+              Statistiques
             </Link>
             
             <div className="flex items-center gap-4 ml-4 pl-4 border-l border-gray-200">
