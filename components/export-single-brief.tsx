@@ -71,7 +71,7 @@ export function ExportSingleBrief({ brief }: { brief: BriefData }) {
       `Statut: ${statusLabels[brief.status] || brief.status}`,
       `Priorité: ${priorityLabels[brief.priority] || brief.priority}`,
       brief.deadline ? `Deadline: ${new Date(brief.deadline).toLocaleDateString('fr-FR')}` : null,
-      brief.budget ? `Budget: ${brief.budget.toLocaleString('fr-FR')} €` : null,
+      brief.budget ? `Budget: ${brief.budget} €` : null,
       brief.estimatedHours ? `Heures estimées: ${brief.estimatedHours}h` : null,
       `Créé le: ${new Date(brief.createdAt).toLocaleDateString('fr-FR')}`,
     ].filter(Boolean)
@@ -111,7 +111,7 @@ export function ExportSingleBrief({ brief }: { brief: BriefData }) {
         startY: yPosition,
         head: [['Statut', 'Titre', 'Description']],
         body: brief.tasks.map(task => [
-          task.completed ? '✓' : '○',
+          task.completed ? 'V' : 'O',
           task.title,
           task.description || '-',
         ]),
